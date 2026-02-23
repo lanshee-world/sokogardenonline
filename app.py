@@ -88,7 +88,7 @@ def signin():
 @app.route("/api/add_product" , methods = ["POST"])
 def Addproducts():
     if request.method == "POST":
-    #    extract the data entered on the form
+        #   extract the data entered on the form
         product_name = request.form["product_name"]
         product_description = request.form["product_description"]
         product_cost = request.form["product_cost"]
@@ -127,10 +127,29 @@ def Addproducts():
 
 
 
-
-        return jsonify({"message" : "Product added successfully"})  
+        return jsonify({"message" : "Product added successfully"}) 
+     
 
         
+# Below is the route for fetching products
+@app.route("/api/get_products")
+def get_products():
+    # establish a connection to the database
+    connection = pymysql.connect(host ="localhost", user ="root", password ="", database ="sokogardenonline")
+
+    # create a cursor
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+    # define the sql query to fetch all the products from the database
+    sql = "SELECT * FROM product_details"
+
+    # execute the sql query
+    cursor.execute(sql)
+
+    # fetch all the products and store them in a variable
+    products = cursor.fetchall()
+
+    return jsonify(products)
 
 
 
